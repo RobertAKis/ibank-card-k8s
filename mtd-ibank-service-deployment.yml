@@ -15,7 +15,7 @@ spec:
     spec:
       containers:
       - name: mtd-ibank-service
-        image: kisrobert/ibank-card-service:latest
+        image: ibank-card-service:latest
         imagePullPolicy: Never
         ports:
         - containerPort: 8686

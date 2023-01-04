@@ -15,13 +15,15 @@ spec:
     spec:
       containers:
       - name: mtd-ibank-connector
-        image: kisrobert/ibank-card-connector
+        image: ibank-card-connector
         imagePullPolicy: Never
         ports:
-        - containerPort: 8080
+        - containerPort: 8181
         env:
         - name: APP_PORT
           value: "8080"
         - name: KAFKA_SRV
-          value: "//kafka-service:9092"
+          value: "kafka-service:9092"
+        - name: SERVICE_SERVER
+          value: "https://ibank-service/api/v1/creditCard"
                           

@@ -29,9 +29,9 @@ spec:
               value: |
                 akhq:
                   connections:
-                    kafka-broker:
+                    kafka:
                       properties:
-                        bootstrap.servers: "localhost:9092"
+                        bootstrap.servers: "kafka-service:9092"
           image: tchiotludo/akhq
           name: akhq
           ports:
