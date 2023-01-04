@@ -5,11 +5,11 @@ metadata:
 spec:
   selector:
     app: akhq-cluster
-  type: LoadBalancerr  
+  type: LoadBalancer
   ports:
   - name: client
     port: 8080
-    targetPort: 8088 
+    targetPort: 8080
   - name: follower
     port: 8081
     targetPort: 8081
@@ -37,17 +37,12 @@ spec:
       - name: akhq-cluster
         image: tchiotludo/akhq:0.18.0 
 #        image: bitnami/kafka:latest
-        securityContext:
-          runAsUser: 0
         resources:
           requests:
             memory: "1G"
             cpu: "1"             
         ports:
          - containerPort: 8080
-        envFrom:
-            - configMapRef:
-                name: postgres-config
-        # env:
-        # - name: AKHQ_CFH_KAFKA_CONNECT
-        #   value: kafka-service:9092
+        env:
+         - name: AKHQ_CFH_KAFKA_CONNECT
+           value: kafka-broker:9092
