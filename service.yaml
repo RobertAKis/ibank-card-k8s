@@ -1,0 +1,37 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: ibank-service
+spec:
+  selector:
+    app: mtd-ibank-service
+  ports:
+  - port: 8686
+    targetPort: 8686
+
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: mtd-ibank-service
+  namespace: default
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      name: mtd-ibank-service
+  template:
+    metadata:
+      labels:
+        name: mtd-ibank-service
+    spec:
+      containers:
+      - name: mtd-ibank-service
+        image: ibank-card-service:latest
+        imagePullPolicy: Never
+        ports:
+        - containerPort: 8686
+        env:
+        - name: APP_PORT
+          value: "8686"
+        - name: DB_URL
+          value: "jdbc:postgresql://postgres-service:5432/pimp"
