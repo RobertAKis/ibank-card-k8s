@@ -1,53 +1,41 @@
-apiVersion: v1
-kind: Service
-metadata:
-  name: akhq-cluster
-spec:
-  selector:
-    app: akhq-cluster
-  type: LoadBalancerr  
-  ports:
-  - name: client
-    port: 8080
-    targetPort: 8088 
-  - name: follower
-    port: 8081
-    targetPort: 8081
-  - name: leader
-    port: 8082
-    targetPort: 8082
-     
-
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: akhq-cluster
+  annotations:
+    kompose.cmd: kompose convert
+    kompose.version: 1.27.0 (HEAD)
+  creationTimestamp: null
+  labels:
+    io.kompose.service: akhq
+  name: akhq
 spec:
   replicas: 1
   selector:
     matchLabels:
-        app: akhq-cluster
+      io.kompose.service: akhq
+  strategy: {}
   template:
     metadata:
+      annotations:
+        kompose.cmd: kompose convert
+        kompose.version: 1.27.0 (HEAD)
+      creationTimestamp: null
       labels:
-        app: akhq-cluster
+        io.kompose.service: akhq
     spec:
-      hostname: akhq-cluster
       containers:
-      - name: akhq-cluster
-        image: tchiotludo/akhq:0.18.0 
-#        image: bitnami/kafka:latest
-        securityContext:
-          runAsUser: 0
-        resources:
-          requests:
-            memory: "1G"
-            cpu: "1"             
-        ports:
-         - containerPort: 8080
-        envFrom:
-            - configMapRef:
-                name: postgres-config
-        # env:
-        # - name: AKHQ_CFH_KAFKA_CONNECT
-        #   value: kafka-service:9092
+        - env:
+            - name: AKHQ_CONFIGURATION
+              value: |
+                akhq:
+                  connections:
+                    kafka-broker:
+                      properties:
+                        bootstrap.servers: "localhost:9092"
+          image: tchiotludo/akhq
+          name: akhq
+          ports:
+            - containerPort: 8080
+          resources: {}
+      restartPolicy: Always
+status: {}

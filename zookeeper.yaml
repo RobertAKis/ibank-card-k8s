@@ -31,8 +31,11 @@ spec:
         app: zookeeper
     spec:
       containers:
-        - image: wurstmeister/zookeeper
+        - image: bitnami/zookeeper
           imagePullPolicy: IfNotPresent
+          env:
+           - name: ALLOW_ANONYMOUS_LOGIN
+             value: "yes"
           name: zookeeper
           ports:
             - containerPort: 2181

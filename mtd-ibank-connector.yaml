@@ -1,0 +1,27 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: mtd-ibank-connector
+  namespace: default
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      name: mtd-ibank-connector
+  template:
+    metadata:
+      labels:
+        name: mtd-ibank-connector
+    spec:
+      containers:
+      - name: mtd-ibank-connector
+        image: kisrobert/ibank-card-connector
+        imagePullPolicy: Never
+        ports:
+        - containerPort: 8080
+        env:
+        - name: APP_PORT
+          value: "8080"
+        - name: KAFKA_SRV
+          value: "//kafka-service:9092"
+                          
